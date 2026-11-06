@@ -15,6 +15,7 @@
       --btn-hover: rgba(255, 255, 255, 0.15);
       --accent: #38bdf8;
       --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+      --submit-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
     }
 
     body {
@@ -97,19 +98,37 @@
       box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
     }
 
-    /* Invulscherm / Editor paneel voor artiesten */
+    .btn-submit {
+      background: var(--submit-gradient);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.9;
+      transform: scale(0.99);
+    }
+
+    /* Editor Box */
     .editor-box {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 15px;
-      border-radius: 12px;
+      padding: 18px;
+      border-radius: 16px;
       margin-bottom: 24px;
       text-align: left;
     }
 
     .editor-box h3 {
-      font-size: 14px;
-      margin: 0 0 10px;
+      font-size: 15px;
+      margin: 0 0 12px;
       color: var(--accent);
     }
 
@@ -117,18 +136,18 @@
       display: block;
       font-size: 11px;
       color: var(--text-muted);
+      margin-top: 8px;
       margin-bottom: 4px;
     }
 
     .editor-box input {
       width: 100%;
-      padding: 8px 10px;
+      padding: 9px 12px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
       color: #fff;
       font-size: 12px;
-      margin-bottom: 10px;
       box-sizing: border-box;
     }
 
@@ -137,14 +156,31 @@
       border-color: var(--accent);
     }
 
+    .result-box {
+      display: none;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #10b981;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .result-box p {
+      font-size: 12px;
+      margin: 0 0 8px;
+      color: #6ee7b7;
+    }
+
     .toggle-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 20px;
       font-size: 12px;
       cursor: pointer;
-      margin-bottom: 15px;
-      text-decoration: underline;
+      margin-bottom: 20px;
     }
 
     .footer-brand {
@@ -164,48 +200,71 @@
 <body>
   <div class="container">
     
-    <!-- Knop om het invulscherm in/uit te klappen -->
-    <button class="toggle-btn" onclick="toggleEditor()">⚙️ Bewerk / Plak hier je links</button>
+    <button class="toggle-btn" onclick="toggleEditor()">⚙️ Create / Update Your Links</button>
 
-    <!-- INVULSCHEM (Hier kunnen ze hun links plakken) -->
+    <!-- INVOER / SUBMIT FORMULIER -->
     <div id="editorPanel" class="editor-box">
-      <h3>🔗 Link Editor</h3>
-      <label>Artiest Naam:</label>
-      <input type="text" id="inputName" value="Artist Name" oninput="updatePage()">
+      <h3>🚀 Generate Your Bio Link</h3>
+      
+      <label>Artist Name:</label>
+      <input type="text" id="inputName" placeholder="e.g. John Doe">
 
-      <label>Chatsong Topic Link (Release):</label>
-      <input type="text" id="inputTopic" value="https://chatsong.nl/d/1832-second-single-mystery-land-out-today" oninput="updatePage()">
+      <label>Chatsong Username:</label>
+      <input type="text" id="inputUsername" placeholder="e.g. johndoe">
 
-      <label>Chatsong Profiel Link:</label>
-      <input type="text" id="inputProfile" value="https://chatsong.nl/u/artistname" oninput="updatePage()">
+      <label>Chatsong Latest Topic / Release URL:</label>
+      <input type="text" id="inputTopic" placeholder="https://chatsong.nl/d/1832-...">
 
-      <label>Bandcamp / Muziek Link:</label>
-      <input type="text" id="inputMusic" value="https://artist.bandcamp.com" oninput="updatePage()">
+      <label>Spotify Track / Album Link:</label>
+      <input type="text" id="inputSpotify" placeholder="https://open.spotify.com/track/...">
 
-      <label>Officiële Website:</label>
-      <input type="text" id="inputWeb" value="https://artistwebsite.com" oninput="updatePage()">
+      <label>Bandcamp / SoundCloud Link:</label>
+      <input type="text" id="inputBandcamp" placeholder="https://artist.bandcamp.com">
+
+      <label>YouTube Video / Channel Link:</label>
+      <input type="text" id="inputYoutube" placeholder="https://youtube.com/watch?v=...">
+
+      <label>Official Website:</label>
+      <input type="text" id="inputWeb" placeholder="https://yourwebsite.com">
+
+      <!-- SUBMIT KNOP -->
+      <button class="btn-submit" onclick="generateLink()">✨ Generate & Submit Instagram Link</button>
+
+      <!-- RESULTAAT / KOPIEER KNOP -->
+      <div id="resultBox" class="result-box">
+        <p>✅ Your custom Linktree URL is ready!</p>
+        <button class="btn" style="width:100%; background:#10b981; color:#fff;" onclick="copyInstagramLink()">📋 Copy Link for Instagram Bio</button>
+      </div>
     </div>
 
-    <!-- PREVIEW VAN DE PAGINA -->
-    <img src="artist-photo.jpg" alt="Artist" class="profile-pic" id="profileImg">
+    <!-- PREVIEW & LIVE WEERGAVE VAN DE KNOPPEN -->
+    <img src="https://via.placeholder.com/150" alt="Artist" class="profile-pic" id="profileImg">
     <h1 id="displayName">Artist Name</h1>
     <p class="bio">Independent Musician &bull; Member of Chatsong</p>
 
     <div class="links">
-      <a href="#" id="linkTopic" class="btn btn-primary" target="_blank">
+      <a href="#" id="linkTopic" class="btn btn-primary" target="_blank" style="display:none;">
         💬 Chatsong Topic: Latest Release
       </a>
 
-      <a href="#" id="linkProfile" class="btn" target="_blank">
+      <a href="#" id="linkProfile" class="btn" target="_blank" style="display:none;">
         👤 Chatsong Community Profile
       </a>
 
-      <a href="#" id="linkMusic" class="btn" target="_blank">
-        🎵 Listen on Bandcamp
+      <a href="#" id="linkSpotify" class="btn" target="_blank" style="display:none;">
+        🎧 Listen on Spotify
       </a>
 
-      <a href="#" id="linkWeb" class="btn" target="_blank">
-        🌐 Official Website & Info
+      <a href="#" id="linkBandcamp" class="btn" target="_blank" style="display:none;">
+        🎵 Listen on Bandcamp / SoundCloud
+      </a>
+
+      <a href="#" id="linkYoutube" class="btn" target="_blank" style="display:none;">
+        ▶️ Watch on YouTube
+      </a>
+
+      <a href="#" id="linkWeb" class="btn" target="_blank" style="display:none;">
+        🌐 Official Website
       </a>
     </div>
 
@@ -215,26 +274,78 @@
   </div>
 
   <script>
-    function updatePage() {
-      // Haal waardes op uit de velden en zet ze direct in de knoppen
-      document.getElementById('displayName').innerText = document.getElementById('inputName').value;
-      document.getElementById('linkTopic').href = document.getElementById('inputTopic').value;
-      document.getElementById('linkProfile').href = document.getElementById('inputProfile').value;
-      document.getElementById('linkMusic').href = document.getElementById('inputMusic').value;
-      document.getElementById('linkWeb').href = document.getElementById('inputWeb').value;
+    let generatedUrl = "";
+
+    // Parse URL parameters when someone opens the link from Instagram
+    window.onload = function() {
+      const params = new URLSearchParams(window.location.search);
+      
+      if (params.has('name')) {
+        // Hide editor if loaded via a unique link
+        document.getElementById('editorPanel').style.display = 'none';
+        
+        const name = params.get('name');
+        const user = params.get('user');
+        const topic = params.get('topic');
+        const spotify = params.get('spotify');
+        const bandcamp = params.get('bandcamp');
+        const yt = params.get('yt');
+        const web = params.get('web');
+
+        document.getElementById('displayName').innerText = name;
+
+        if (topic) setupBtn('linkTopic', topic);
+        if (user) setupBtn('linkProfile', 'https://chatsong.nl/u/' + user);
+        if (spotify) setupBtn('linkSpotify', spotify);
+        if (bandcamp) setupBtn('linkBandcamp', bandcamp);
+        if (yt) setupBtn('linkYoutube', yt);
+        if (web) setupBtn('linkWeb', web);
+      } else {
+        // Show default preview links
+        setupBtn('linkTopic', 'https://chatsong.nl');
+        setupBtn('linkProfile', 'https://chatsong.nl');
+      }
+    };
+
+    function setupBtn(id, url) {
+      const btn = document.getElementById(id);
+      btn.href = url;
+      btn.style.display = 'flex';
+    }
+
+    function generateLink() {
+      const name = encodeURIComponent(document.getElementById('inputName').value || 'Artist');
+      const user = encodeURIComponent(document.getElementById('inputUsername').value || '');
+      const topic = encodeURIComponent(document.getElementById('inputTopic').value || '');
+      const spotify = encodeURIComponent(document.getElementById('inputSpotify').value || '');
+      const bandcamp = encodeURIComponent(document.getElementById('inputBandcamp').value || '');
+      const yt = encodeURIComponent(document.getElementById('inputYoutube').value || '');
+      const web = encodeURIComponent(document.getElementById('inputWeb').value || '');
+
+      const baseUrl = window.location.origin + window.location.pathname;
+      generatedUrl = `${baseUrl}?name=${name}&user=${user}&topic=${topic}&spotify=${spotify}&bandcamp=${bandcamp}&yt=${yt}&web=${web}`;
+
+      document.getElementById('resultBox').style.display = 'block';
+
+      // Update live preview directly
+      document.getElementById('displayName').innerText = document.getElementById('inputName').value || 'Artist Name';
+      if (topic) setupBtn('linkTopic', document.getElementById('inputTopic').value);
+      if (user) setupBtn('linkProfile', 'https://chatsong.nl/u/' + document.getElementById('inputUsername').value);
+      if (spotify) setupBtn('linkSpotify', document.getElementById('inputSpotify').value);
+      if (bandcamp) setupBtn('linkBandcamp', document.getElementById('inputBandcamp').value);
+      if (yt) setupBtn('linkYoutube', document.getElementById('inputYoutube').value);
+      if (web) setupBtn('linkWeb', document.getElementById('inputWeb').value);
+    }
+
+    function copyInstagramLink() {
+      navigator.clipboard.writeText(generatedUrl);
+      alert('Link copied to clipboard! You can now paste this URL into your Instagram bio.');
     }
 
     function toggleEditor() {
       var panel = document.getElementById('editorPanel');
-      if (panel.style.display === 'none') {
-        panel.style.display = 'block';
-      } else {
-        panel.style.display = 'none';
-      }
+      panel.style.display = (panel.style.display === 'none') ? 'block' : 'none';
     }
-
-    // Voer direct uit bij laden
-    updatePage();
   </script>
 </body>
 </html>
