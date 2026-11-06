@@ -22,7 +22,7 @@
       background: var(--bg-gradient);
       color: var(--text-main);
       margin: 0;
-      padding: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -31,52 +31,43 @@
 
     .container {
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      padding: 40px 24px;
+      padding: 30px 20px;
       border-radius: 24px;
       text-align: center;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      margin: 20px;
-    }
-
-    .profile-pic-wrapper {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 16px;
     }
 
     .profile-pic {
-      width: 100%;
-      height: 100%;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid rgba(56, 189, 248, 0.5);
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+      margin-bottom: 12px;
     }
 
     h1 {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
-      margin: 0 0 6px;
-      letter-spacing: -0.5px;
+      margin: 0 0 5px;
     }
 
     .bio {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 32px;
-      font-weight: 400;
+      margin-bottom: 24px;
     }
 
     .links {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
 
     .btn {
@@ -86,36 +77,78 @@
       gap: 10px;
       background: var(--btn-bg);
       color: var(--text-main);
-      padding: 16px 20px;
-      border-radius: 14px;
+      padding: 14px 18px;
+      border-radius: 12px;
       text-decoration: none;
       font-weight: 600;
       font-size: 14px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
     }
 
     .btn:hover {
       background: var(--btn-hover);
-      transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
     }
 
-    /* De primaire knop (voor de nieuwe Release / Topic Link) met hippe gradient */
     .btn-primary {
       background: var(--accent-gradient);
       border: none;
       box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
     }
 
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
-      box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+    /* Invulscherm / Editor paneel voor artiesten */
+    .editor-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .editor-box h3 {
+      font-size: 14px;
+      margin: 0 0 10px;
+      color: var(--accent);
+    }
+
+    .editor-box label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .editor-box input {
+      width: 100%;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    .editor-box input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      text-decoration: underline;
     }
 
     .footer-brand {
-      margin-top: 30px;
+      margin-top: 25px;
       font-size: 11px;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -130,42 +163,78 @@
 </head>
 <body>
   <div class="container">
-    <!-- Profielfoto van de artiest -->
-    <div class="profile-pic-wrapper">
-      <img src="artist-photo.jpg" alt="Artist Name" class="profile-pic">
-    </div>
     
-    <h1>Artist Name</h1>
+    <!-- Knop om het invulscherm in/uit te klappen -->
+    <button class="toggle-btn" onclick="toggleEditor()">⚙️ Bewerk / Plak hier je links</button>
+
+    <!-- INVULSCHEM (Hier kunnen ze hun links plakken) -->
+    <div id="editorPanel" class="editor-box">
+      <h3>🔗 Link Editor</h3>
+      <label>Artiest Naam:</label>
+      <input type="text" id="inputName" value="Artist Name" oninput="updatePage()">
+
+      <label>Chatsong Topic Link (Release):</label>
+      <input type="text" id="inputTopic" value="https://chatsong.nl/d/1832-second-single-mystery-land-out-today" oninput="updatePage()">
+
+      <label>Chatsong Profiel Link:</label>
+      <input type="text" id="inputProfile" value="https://chatsong.nl/u/artistname" oninput="updatePage()">
+
+      <label>Bandcamp / Muziek Link:</label>
+      <input type="text" id="inputMusic" value="https://artist.bandcamp.com" oninput="updatePage()">
+
+      <label>Officiële Website:</label>
+      <input type="text" id="inputWeb" value="https://artistwebsite.com" oninput="updatePage()">
+    </div>
+
+    <!-- PREVIEW VAN DE PAGINA -->
+    <img src="artist-photo.jpg" alt="Artist" class="profile-pic" id="profileImg">
+    <h1 id="displayName">Artist Name</h1>
     <p class="bio">Independent Musician &bull; Member of Chatsong</p>
 
-    <!-- Knoppen & Links (Artiesten kunnen dit zelf aanpassen) -->
     <div class="links">
-      
-      <!-- 1. TOPIC LINK (Vervang de URL hieronder met het Chatsong releasetopic) -->
-      <a href="https://chatsong.nl/d/1832-second-single-mystery-land-out-today" class="btn btn-primary" target="_blank">
+      <a href="#" id="linkTopic" class="btn btn-primary" target="_blank">
         💬 Chatsong Topic: Latest Release
       </a>
 
-      <!-- 2. PROFILE LINK (Vervang de URL met het Chatsong profiel van de artiest) -->
-      <a href="https://chatsong.nl/u/artistname" class="btn" target="_blank">
+      <a href="#" id="linkProfile" class="btn" target="_blank">
         👤 Chatsong Community Profile
       </a>
 
-      <!-- 3. MUSIC STREAM (Bandcamp / SoundCloud / etc.) -->
-      <a href="https://artist.bandcamp.com" class="btn" target="_blank">
+      <a href="#" id="linkMusic" class="btn" target="_blank">
         🎵 Listen on Bandcamp
       </a>
 
-      <!-- 4. OFFICIAL WEBSITE -->
-      <a href="https://artistwebsite.com" class="btn" target="_blank">
+      <a href="#" id="linkWeb" class="btn" target="_blank">
         🌐 Official Website & Info
       </a>
-
     </div>
 
     <div class="footer-brand">
       Powered by <a href="https://chatsong.nl" target="_blank">Chatsong</a>
     </div>
   </div>
+
+  <script>
+    function updatePage() {
+      // Haal waardes op uit de velden en zet ze direct in de knoppen
+      document.getElementById('displayName').innerText = document.getElementById('inputName').value;
+      document.getElementById('linkTopic').href = document.getElementById('inputTopic').value;
+      document.getElementById('linkProfile').href = document.getElementById('inputProfile').value;
+      document.getElementById('linkMusic').href = document.getElementById('inputMusic').value;
+      document.getElementById('linkWeb').href = document.getElementById('inputWeb').value;
+    }
+
+    function toggleEditor() {
+      var panel = document.getElementById('editorPanel');
+      if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+      } else {
+        panel.style.display = 'none';
+      }
+    }
+
+    // Voer direct uit bij laden
+    updatePage();
+  </script>
 </body>
 </html>
